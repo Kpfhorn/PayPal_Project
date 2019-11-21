@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -24,13 +25,14 @@ public class DownloadsPK implements Serializable {
     private int regimeID;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "BuyerUser_ID")
-    private int buyerUserID;
+    private String buyerUserID;
 
     public DownloadsPK() {
     }
 
-    public DownloadsPK(int regimeID, int buyerUserID) {
+    public DownloadsPK(int regimeID, String buyerUserID) {
         this.regimeID = regimeID;
         this.buyerUserID = buyerUserID;
     }
@@ -43,11 +45,11 @@ public class DownloadsPK implements Serializable {
         this.regimeID = regimeID;
     }
 
-    public int getBuyerUserID() {
+    public String getBuyerUserID() {
         return buyerUserID;
     }
 
-    public void setBuyerUserID(int buyerUserID) {
+    public void setBuyerUserID(String buyerUserID) {
         this.buyerUserID = buyerUserID;
     }
 
@@ -55,7 +57,7 @@ public class DownloadsPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) regimeID;
-        hash += (int) buyerUserID;
+        hash += (buyerUserID != null ? buyerUserID.hashCode() : 0);
         return hash;
     }
 
@@ -69,7 +71,7 @@ public class DownloadsPK implements Serializable {
         if (this.regimeID != other.regimeID) {
             return false;
         }
-        if (this.buyerUserID != other.buyerUserID) {
+        if ((this.buyerUserID == null && other.buyerUserID != null) || (this.buyerUserID != null && !this.buyerUserID.equals(other.buyerUserID))) {
             return false;
         }
         return true;

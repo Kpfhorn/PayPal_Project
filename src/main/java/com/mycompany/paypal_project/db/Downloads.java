@@ -63,7 +63,7 @@ public class Downloads implements Serializable {
         this.downloadsPK = downloadsPK;
     }
 
-    public Downloads(int regimeID, int buyerUserID) {
+    public Downloads(int regimeID, String buyerUserID) {
         this.downloadsPK = new DownloadsPK(regimeID, buyerUserID);
     }
 

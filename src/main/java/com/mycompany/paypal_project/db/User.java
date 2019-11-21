@@ -49,33 +49,34 @@ public class User implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "User_ID")
-    private Integer userID;
-    @OneToMany(mappedBy = "createdByID")
-    private Collection<Regime> regimeCollection;
+    private String userID;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Downloads> downloadsCollection;
+    @OneToMany(mappedBy = "createdByID")
+    private Collection<Regime> regimeCollection;
     @OneToMany(mappedBy = "createdByID")
     private Collection<Categories> categoriesCollection;
 
     public User() {
     }
 
-    public User(Integer userID) {
+    public User(String userID) {
         this.userID = userID;
     }
 
-    public User(Integer userID, boolean isSeller, String name) {
+    public User(String userID, boolean isSeller, String name) {
         this.userID = userID;
         this.isSeller = isSeller;
         this.name = name;
     }
 
-    public Integer getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(Integer userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 
@@ -89,21 +90,21 @@ public class User implements Serializable {
 
 
     @XmlTransient
-    public Collection<Regime> getRegimeCollection() {
-        return regimeCollection;
-    }
-
-    public void setRegimeCollection(Collection<Regime> regimeCollection) {
-        this.regimeCollection = regimeCollection;
-    }
-
-    @XmlTransient
     public Collection<Downloads> getDownloadsCollection() {
         return downloadsCollection;
     }
 
     public void setDownloadsCollection(Collection<Downloads> downloadsCollection) {
         this.downloadsCollection = downloadsCollection;
+    }
+
+    @XmlTransient
+    public Collection<Regime> getRegimeCollection() {
+        return regimeCollection;
+    }
+
+    public void setRegimeCollection(Collection<Regime> regimeCollection) {
+        this.regimeCollection = regimeCollection;
     }
 
     @XmlTransient

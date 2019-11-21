@@ -27,7 +27,7 @@ import javax.ws.rs.core.PathSegment;
  * @author kpfho
  */
 @Stateless
-@Path("downloads")
+@Path("com.mycompany.paypal_project.db.downloads")
 public class DownloadsFacadeREST extends AbstractFacade<Downloads> {
 
     @PersistenceContext(unitName = "my_persistence_unit")
@@ -49,7 +49,7 @@ public class DownloadsFacadeREST extends AbstractFacade<Downloads> {
         }
         java.util.List<String> buyerUserID = map.get("buyerUserID");
         if (buyerUserID != null && !buyerUserID.isEmpty()) {
-            key.setBuyerUserID(new java.lang.Integer(buyerUserID.get(0)));
+            key.setBuyerUserID(buyerUserID.get(0));
         }
         return key;
     }

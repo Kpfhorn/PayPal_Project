@@ -57,15 +57,11 @@ public class Regime implements Serializable {
     private Boolean publishStatus;
     @Column(name = "DownloadCount")
     private Integer downloadCount;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "regime")
+    private Collection<Downloads> downloadsCollection;
     @JoinColumn(name = "CreatedBy_ID", referencedColumnName = "User_ID")
     @ManyToOne
     private User createdByID;
-    @OneToMany(mappedBy = "regimeID")
-    private Collection<Profiles> profilesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "regime")
-    private Collection<Regimedetails> regimedetailsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "regime")
-    private Collection<Downloads> downloadsCollection;
 
     public Regime() {
     }
@@ -114,32 +110,6 @@ public class Regime implements Serializable {
         this.downloadCount = downloadCount;
     }
 
-    public User getCreatedByID() {
-        return createdByID;
-    }
-
-    public void setCreatedByID(User createdByID) {
-        this.createdByID = createdByID;
-    }
-
-    @XmlTransient
-    public Collection<Profiles> getProfilesCollection() {
-        return profilesCollection;
-    }
-
-    public void setProfilesCollection(Collection<Profiles> profilesCollection) {
-        this.profilesCollection = profilesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Regimedetails> getRegimedetailsCollection() {
-        return regimedetailsCollection;
-    }
-
-    public void setRegimedetailsCollection(Collection<Regimedetails> regimedetailsCollection) {
-        this.regimedetailsCollection = regimedetailsCollection;
-    }
-
     @XmlTransient
     public Collection<Downloads> getDownloadsCollection() {
         return downloadsCollection;
@@ -147,6 +117,14 @@ public class Regime implements Serializable {
 
     public void setDownloadsCollection(Collection<Downloads> downloadsCollection) {
         this.downloadsCollection = downloadsCollection;
+    }
+
+    public User getCreatedByID() {
+        return createdByID;
+    }
+
+    public void setCreatedByID(User createdByID) {
+        this.createdByID = createdByID;
     }
 
     @Override
@@ -173,5 +151,5 @@ public class Regime implements Serializable {
     public String toString() {
         return "com.mycompany.paypal_project.db.Regime[ regimeID=" + regimeID + " ]";
     }
-
+    
 }

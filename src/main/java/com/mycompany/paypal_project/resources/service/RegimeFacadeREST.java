@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author kpfho
  */
 @Stateless
-@Path("regime")
+@Path("com.mycompany.paypal_project.db.regime")
 public class RegimeFacadeREST extends AbstractFacade<Regime> {
 
     @PersistenceContext(unitName = "my_persistence_unit")
