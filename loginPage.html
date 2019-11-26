@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Login page
+	</title>
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
+<script language="javascript">
+function check(form)/*function to check userid & password*/
+{
+ /*the following code checkes whether the entered userid and password are matching*/
+ if(form.userid.value == "go" && form.pswrd.value == "go")
+  {
+    window.open('welcomePage.html')/*opens the target page while Id & password matches*/
+  }
+ else
+ {
+  if (window.confirm("Error Password or Username. click ok to create account or cancel to re-enter.")){
+   window.location.href='createPage.html';
+   };
+  }
+}
+</script>
+</head>
+
+<header>
+</header>
+
+<nav>
+	<ul>
+		<li><a href="welcomePage.html">Weclome Page</a></li>
+		<li><a href="createPage.html">Create Page</a></li>
+	</ul>
+</nav>
+
+<body>
+
+<h1 style="font-family:arial;text-align:center;font-size:20pt;">Login</h1>
+
+<div class="centerForm">
+	<form style="border-style: solid; border-width: 1px; padding: 10px">
+		<label> Username</label>
+		<br>
+		<input type="text" name="userid"/>
+		<br>
+		<label>Password</label>
+		<br>
+		<input type="password" name="pswrd"/>
+		<br>
+		<input type="button" onclick="check(this.form)" value="Login"/>
+		<input type="reset" value="Cancel"/>
+		<br>
+		<a href="forgotUsername.html">Forgot username</a>|<a href="forgotPassword.html">Forgot password</a>
+	</form>
+</div>
+
+
+<footer>
+</footer>
+
+</body>
+
+</html>
