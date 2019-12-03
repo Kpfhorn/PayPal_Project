@@ -5,11 +5,14 @@
  */
 package com.mycompany.paypal_project.resources.service;
 
+import com.mycompany.paypal_project.db.Regime;
 import com.mycompany.paypal_project.db.User;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,7 +28,7 @@ import javax.ws.rs.core.MediaType;
  * @author kpfho
  */
 @Stateless
-@Path("com.mycompany.paypal_project.db.user")
+@Path("user")
 public class UserFacadeREST extends AbstractFacade<User> {
 
     @PersistenceContext(unitName = "my_persistence_unit")
@@ -60,6 +63,15 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public User find(@PathParam("id") String id) {
         return super.find(id);
+    }
+    
+    @GET
+    @Path("{id}/pw")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<Regime> findByCreatedByID(@PathParam("id") String id){
+        TypedQuery<Regime> q = em.createNamedQuery("Regime.findByCreatedByID", Regime.class);
+        q.setParameter("createdByID", em.find(User.class, id));
+        return q.getResultList();
     }
 
     @GET

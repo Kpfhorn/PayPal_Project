@@ -7,6 +7,7 @@ package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Profiles.findAll", query = "SELECT p FROM Profiles p"),
-    @NamedQuery(name = "Profiles.findByProfileID", query = "SELECT p FROM Profiles p WHERE p.profileID = :profileID")})
+    @NamedQuery(name = "Profiles.findByProfileID", query = "SELECT p FROM Profiles p WHERE p.profileID = :profileID"),
+    @NamedQuery(name = "Profiles.findByRegimeID", query = "SELECT p FROM Profiles p WHERE p.regimeID = :regimeID")})
 public class Profiles implements Serializable {
 
     @Lob
@@ -91,7 +93,7 @@ public class Profiles implements Serializable {
         this.profilePhoto = profilePhoto;
     }
 
-
+    @JsonbTransient
     public Regime getRegimeID() {
         return regimeID;
     }

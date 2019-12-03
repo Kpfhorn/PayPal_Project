@@ -5,11 +5,14 @@
  */
 package com.mycompany.paypal_project.resources.service;
 
+import com.mycompany.paypal_project.db.Profilecategories;
 import com.mycompany.paypal_project.db.Profiles;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -67,6 +70,15 @@ public class ProfilesFacadeREST extends AbstractFacade<Profiles> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Profiles> findAll() {
         return super.findAll();
+    }
+    
+    @GET
+    @Path("{id}/profilecategories")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<Profilecategories> findProfileCategories(@PathParam("id") Integer id){
+        TypedQuery<Profilecategories> q = em.createNamedQuery("Profilecategories.findByProfileID", Profilecategories.class);
+        q.setParameter("profileID", em.find(Profiles.class, id));
+        return q.getResultList();
     }
 
     @GET

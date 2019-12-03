@@ -40,22 +40,18 @@ public class RegistrationServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String username = request.getParameter("username");
         String seller = request.getParameter("seller");
+        System.out.println(request.getParameter("seller"));
         String name = request.getParameter("name");
         User exists = userService.selectByID(username);
         boolean isSeller = false;
         if (exists == null) {
-            switch(seller){
-                case "True":
-                    isSeller = false;
-                    break;
-                case "False":
-                    isSeller = true;
-                    break;
+            if(seller != null){
+                isSeller = true;
             }
             User u = new User(username, isSeller, name);
             userService.addUser(u);
             HttpSession session = request.getSession();
-            session.setAttribute("user", u.getUserID());
+            session.setAttribute("user", u);
             response.sendRedirect("storefront.jsp");
         }
     }

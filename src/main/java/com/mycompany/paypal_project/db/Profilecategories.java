@@ -7,6 +7,7 @@ package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Profilecategories.findAll", query = "SELECT p FROM Profilecategories p"),
     @NamedQuery(name = "Profilecategories.findByProfileCategoryID", query = "SELECT p FROM Profilecategories p WHERE p.profileCategoryID = :profileCategoryID"),
     @NamedQuery(name = "Profilecategories.findByWeightImportance", query = "SELECT p FROM Profilecategories p WHERE p.weightImportance = :weightImportance"),
-    @NamedQuery(name = "Profilecategories.findByRankUrgency", query = "SELECT p FROM Profilecategories p WHERE p.rankUrgency = :rankUrgency")})
+    @NamedQuery(name = "Profilecategories.findByRankUrgency", query = "SELECT p FROM Profilecategories p WHERE p.rankUrgency = :rankUrgency"),
+    @NamedQuery(name = "Profilecategories.findByProfileID", query = "SELECT p FROM Profilecategories p WHERE p.profileID = :profileID")})
 public class Profilecategories implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -93,6 +95,7 @@ public class Profilecategories implements Serializable {
     public void setProfilecategorygoalsCollection(Collection<Profilecategorygoals> profilecategorygoalsCollection) {
         this.profilecategorygoalsCollection = profilecategorygoalsCollection;
     }
+    
 
     public Categories getCategoryID() {
         return categoryID;
@@ -101,7 +104,8 @@ public class Profilecategories implements Serializable {
     public void setCategoryID(Categories categoryID) {
         this.categoryID = categoryID;
     }
-
+    
+    @JsonbTransient
     public Profiles getProfileID() {
         return profileID;
     }

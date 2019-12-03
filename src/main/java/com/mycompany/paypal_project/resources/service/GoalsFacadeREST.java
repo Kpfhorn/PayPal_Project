@@ -36,10 +36,10 @@ public class GoalsFacadeREST extends AbstractFacade<Goals> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Goals entity) {
+    public int createGoal(Goals entity) {
         super.create(entity);
+        return entity.getGoalID();
     }
 
     @PUT

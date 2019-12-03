@@ -43,7 +43,8 @@ public class LoginServlet extends HttpServlet {
         System.out.println(u);
         if (u != null){
             HttpSession session = request.getSession();
-            session.setAttribute("username", u);
+            session.setAttribute("user", u);
+            System.out.println(session.getId());
             response.sendRedirect("storefront.jsp");
         }
         

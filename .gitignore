@@ -2,3 +2,4 @@
 target/classes/.netbeans_automatic_build
 *.class
 *.class
+target/classes/com/mycompany/paypal_project/db/Categories.class

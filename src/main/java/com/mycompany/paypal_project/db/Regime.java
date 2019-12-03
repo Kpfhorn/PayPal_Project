@@ -7,10 +7,12 @@ package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Regime.findByRegimeName", query = "SELECT r FROM Regime r WHERE r.regimeName = :regimeName"),
     @NamedQuery(name = "Regime.findByRegimeTYPE", query = "SELECT r FROM Regime r WHERE r.regimeTYPE = :regimeTYPE"),
     @NamedQuery(name = "Regime.findByPublishStatus", query = "SELECT r FROM Regime r WHERE r.publishStatus = :publishStatus"),
+    @NamedQuery(name = "Regime.findByCreatedByID", query = "SELECT r FROM Regime r WHERE r.createdByID = :createdByID"),
     @NamedQuery(name = "Regime.findByDownloadCount", query = "SELECT r FROM Regime r WHERE r.downloadCount = :downloadCount")})
 public class Regime implements Serializable {
 
@@ -60,7 +63,7 @@ public class Regime implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "regime")
     private Collection<Downloads> downloadsCollection;
     @JoinColumn(name = "CreatedBy_ID", referencedColumnName = "User_ID")
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     private User createdByID;
 
     public Regime() {
@@ -118,7 +121,8 @@ public class Regime implements Serializable {
     public void setDownloadsCollection(Collection<Downloads> downloadsCollection) {
         this.downloadsCollection = downloadsCollection;
     }
-
+    
+    @JsonbTransient
     public User getCreatedByID() {
         return createdByID;
     }

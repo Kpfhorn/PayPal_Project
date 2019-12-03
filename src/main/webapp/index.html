@@ -1,41 +1,18 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <div id="pp_button"></div>
         <script>
-            paypal.Buttons({
-                createOrder: (data, actions) => {
-                    return actions.order.create({
-                        purchase_units: [{
-                                amount: {
-                                    value: '4.99'
-                                }
-                            }]
-                    })
-                },
-                onApprove: (data, actions) => {
-                    return actions.order.capture().then((details) => {
-                        alert('Transaction completed by ' + details.payer.name.given_name);
-                        return fetch('/paypal-transaction-complete', {
-                            method: 'post',
-                            headers: {
-                                'content-type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                orderID: data.orderID
-                            })
-                        })
-                    })
-                }
-            }
-            ).render('#pp_button')
+            window.location.href = "storefront.jsp"
         </script>
     </body>
 </html>

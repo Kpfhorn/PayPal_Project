@@ -6,6 +6,7 @@
 package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -92,7 +93,8 @@ public class Categories implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
+    @JsonbTransient
     public User getCreatedByID() {
         return createdByID;
     }
