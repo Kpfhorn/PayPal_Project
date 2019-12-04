@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,7 +28,7 @@ import javax.ws.rs.core.PathSegment;
  * @author kpfho
  */
 @Stateless
-@Path("com.mycompany.paypal_project.db.downloads")
+@Path("downloads")
 public class DownloadsFacadeREST extends AbstractFacade<Downloads> {
 
     @PersistenceContext(unitName = "my_persistence_unit")
@@ -83,15 +84,18 @@ public class DownloadsFacadeREST extends AbstractFacade<Downloads> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Downloads find(@PathParam("id") PathSegment id) {
-        com.mycompany.paypal_project.db.DownloadsPK key = getPrimaryKey(id);
-        return super.find(key);
+        TypedQuery<Downloads> q = em.createNamedQuery("Downloads.findByOrderID", Downloads.class);
+        q.setParameter("orderID", id);
+        return q.getSingleResult();
     }
 
     @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Downloads> findAll() {
-        return super.findAll();
+    @Path("user/{uid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Downloads> findByBuyerID(@PathParam("uid") String uid) {
+        TypedQuery<Downloads> q = em.createNamedQuery("Downloads.findByBuyerUserID", Downloads.class);
+        q.setParameter("buyerUserID", uid);
+        return q.getResultList();
     }
 
     @GET

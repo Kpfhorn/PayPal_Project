@@ -5,6 +5,7 @@
  */
 package com.mycompany.paypal_project.resources.service;
 
+import com.mycompany.paypal_project.db.Profilecategorygoals;
 import com.mycompany.paypal_project.db.Roadmaps;
 import java.util.List;
 import javax.ejb.Stateless;

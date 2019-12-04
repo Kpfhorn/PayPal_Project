@@ -29,8 +29,6 @@
             Name: <label id="pw_name"></label><br/>
             Type: <label id="pw_type"></label><br/>
             <div id="profiles"></div>
-            <button onclick="publish()" id="pub">Publish</button>
-            <button onclick="unpublish()" hidden="true" id="unpub">Unpublish</button>
         </div>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script>
@@ -85,9 +83,8 @@
                                                 let c = pc.categoryID;
                                                 $('#pf' + pid + '_categories').append(
                                                         "Category Name: " + c.categoryName + "<br/>" +
-                                                        "Category Description: " + c.description + "<br/><br/>" +
+                                                        "Category Description: " + c.description + "<br/>" +
                                                         "<div id='goals" + pc.profileCategoryID + "'></div>"
-                                                        + "<button onclick='addGoal(" + pc.profileCategoryID + ")'>Add Goal</button><br/>"
                                                         );
                                                 $.ajax("resources/profilecategories/" + pc.profileCategoryID + "/goals", {
                                                     method: 'GET',

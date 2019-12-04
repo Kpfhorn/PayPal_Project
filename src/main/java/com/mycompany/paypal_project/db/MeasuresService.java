@@ -15,29 +15,24 @@ import javax.persistence.PersistenceContext;
  * @author kpfho
  */
 @Stateless
-public class CategoryService {
+public class MeasuresService {
     @PersistenceContext
     private EntityManager em;
     
-    public Categories selectByID(int id){
-        return em.find(Categories.class, id);
+    public int addMeasure(Measures m){
+        em.persist(m);
+        return m.getMeasureID();
     }
     
-    public int addCategory(Categories c){
-        em.persist(c);
-        return c.getCategoryID();
+    public int removeMeasure(int id){
+        Measures m = em.find(Measures.class, id);
+        em.remove(m);
+        return m.getMeasureID();
     }
-    
-    public int removeCategory(int id){
-        Categories c = em.find(Categories.class, id);
-        em.remove(c);
-        return c.getCategoryID();
-    }
-    
     
     public int getNewID(){
         int id = new Random().nextInt(100000);
-        Categories exists = em.find(Categories.class, id);
+        Measures exists = em.find(Measures.class, id);
         if(exists != null){
             return getNewID();
         }else{

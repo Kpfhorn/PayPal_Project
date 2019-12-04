@@ -5,50 +5,44 @@
  */
 package com.mycompany.paypal_project.db;
 
-import java.util.Collection;
 import java.util.Random;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+
+/**
+ *
+ * @author kpfho
+ */
 
 @Stateless
-public class RegimeService {
+public class RoadmapsService {
     @PersistenceContext
     private EntityManager em;
     
-    public Regime selectByID(int id){
-        return em.find(Regime.class, id);
+    public Roadmaps selectByID(int id){
+        return em.find(Roadmaps.class, id);
     }
     
-    public int addRegime(Regime r){
+    public int addRoadmap(Roadmaps r){
         em.persist(r);
-        return r.getRegimeID();
+        return r.getRoadMapID();
     }
     
-    public int removeRegime(int id){
-        Regime r = em.find(Regime.class, id);
+    public int removeRoadmap(int id){
+        Roadmaps r = em.find(Roadmaps.class, id);
         em.remove(r);
-        return r.getRegimeID();
+        return r.getRoadMapID();
     }
     
-    public Collection<Regime> getPublished(){
-        TypedQuery<Regime> q = em.createNamedQuery("Regime.findByPublishStatus", Regime.class);
-        q.setParameter("publishStatus", true);
-        return q.getResultList();
-    }
-    
-
-    public int getNewID(){
+     public int getNewID(){
         int id = new Random().nextInt(100000);
-        Regime exists = em.find(Regime.class, id);
+        Roadmaps exists = em.find(Roadmaps.class, id);
         if(exists != null){
             return getNewID();
         }else{
             return id;
         }
     }
-    
-    
     
 }

@@ -24,6 +24,7 @@
             <h1>Create New Pathway</h1>
             Pathway Name<input id="pw_name" type="text"/><br/>
             Pathway Type<input id="pw_type" type="text"/><br/>
+            Pathway Price<input id="pw_price" type="text"/><br/>
             <div id="profiles"></div>
             <button onclick="addProfile()">Add Profile</button>
             <button onclick="create()">Create Pathway</button>
@@ -88,6 +89,7 @@
                                     },
                                     success: (data) => {
                                         console.log(data);
+                                        window.location.href = "profile.jsp";
                                     },
                                     error: (jxqhr, status, thrown) => {
                                         console.log(status);
@@ -102,11 +104,13 @@
                 const create = function () {
                     let name = $('#pw_name').val();
                     let type = $('#pw_type').val();
+                    let price = $('#pw_price').val();
                     $.ajax("PathwayServlet", {
                         method: 'GET',
                         data: {
                             name: name,
-                            type: type
+                            type: type,
+                            price: price
                         },
                         success: (data) => {
                             let regimeID = data;
@@ -139,6 +143,7 @@
                                     })
                                 }
                             }
+//                            window.location.href = "profile.jsp";
                         },
                         error: (jxqhr, status, thrown) => {
                             console.log(status);

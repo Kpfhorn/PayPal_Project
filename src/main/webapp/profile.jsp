@@ -38,56 +38,83 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
         <script>
-                        let checklogin = () => {
-                            $.ajax("CheckLogin", {
-                                method: 'GET',
-                                success: (data) => {
-                                    console.log(data);
-                                    if (data.login === "True") {
-                                        $("#user").text("Profile");
-                                        $("#user").attr("href", "profile.jsp")
-                                    }
-                                },
-                                error: (jxqhr, status, thrown) => {
-                                    console.log(status);
-                                    console.log(thrown);
-                                    window.location.href = "storefront.jsp";
-                                }
-                            })
-                        };
-                        checklogin();
-                        let isSeller = <% out.print(user.getIsSeller());%>;
-                        if (isSeller) {
-                            $("#create_pw").show();
-                        }
-                        let create = function () {
-                            window.location.href = "createPathway.jsp"
-                        }
-                        let view = function (id) {
-                            window.location.href = "viewPathway.jsp?id=" + id;
-                        }
-                        let del = function (id) {
-                            $.ajax("resources/regime/" + id, {
-                                method: 'DELETE',
-                                success: () => {
-                                    window.location.href = "profile.jsp";
-                                }
-                            })
-                        }
-                        $.ajax("resources/user/${user.userID}/pw", {
-                            method: 'GET',
-                            success: (data) => {
-                                for (i in data) {
-                                    let pw = data[i];
-                                    $('#pathways').append(
-                                            "Name: " + pw.regimeName + "<br/>" +
-                                            "Type: " + pw.regimeTYPE + "<br/>" +
-                                            "<button onclick='view(" + pw.regimeID + ")'>View</button>" +
-                                            "<button onclick='del(" + pw.regimeID + ")'>Delete</button><br/>"
-                                            )
-                                }
+                let checklogin = () => {
+                    $.ajax("CheckLogin", {
+                        method: 'GET',
+                        success: (data) => {
+                            console.log(data);
+                            if (data.login === "True") {
+                                $("#user").text("Profile");
+                                $("#user").attr("href", "profile.jsp")
                             }
-                        })
+                        },
+                        error: (jxqhr, status, thrown) => {
+                            console.log(status);
+                            console.log(thrown);
+                            window.location.href = "storefront.jsp";
+                        }
+                    })
+                };
+                checklogin();
+                let isSeller = <% out.print(user.getIsSeller());%>;
+                if (isSeller) {
+                    $("#create_pw").show();
+                    $.ajax("resources/user/${user.userID}/pw", {
+                        method: 'GET',
+                        success: (data) => {
+                            for (i in data) {
+                                let pw = data[i];
+                                $('#pathways').append(
+                                        "Name: " + pw.regimeName + "<br/>" +
+                                        "Type: " + pw.regimeTYPE + "<br/>" +
+                                        "<button onclick='view(" + pw.regimeID + ")'>View</button>" +
+                                        "<button onclick='del(" + pw.regimeID + ")'>Delete</button><br/>"
+                                        )
+                            }
+                        }
+                    })
+                }
+                let create = function () {
+                    window.location.href = "createPathway.jsp"
+                }
+                let view = function (id) {
+                    window.location.href = "viewPathway.jsp?id=" + id;
+                }
+                let viewcs = function (id) {
+                    window.location.href = "viewPathwaycs.jsp?id=" + id;
+                }
+                let del = function (id) {
+                    $.ajax("resources/regime/" + id, {
+                        method: 'DELETE',
+                        success: () => {
+                            window.location.href = "profile.jsp";
+                        }
+                    })
+                }
+                let addPathway = function (id) {
+                    $.ajax("resources/regime/" + id, {
+                        method: 'GET',
+                        success: (data) => {
+                            $('#pathways').append(
+                                        "Name: " + data.regimeName + "<br/>" +
+                                        "Type: " + data.regimeTYPE + "<br/>" +
+                                        "<button onclick='viewcs(" + data.regimeID + ")'>View</button>"
+                                        )
+                        }
+                    })
+                }
+                $.ajax("resources/downloads/user/${user.userID}", {
+                    method: 'GET',
+                    success: (data) => {
+                        console.log(data);
+                        for (i in data) {
+                            let dl = data[i];
+                            let pw = dl.downloadsPK.regimeID;
+                            addPathway(pw);
+                        }
+                    }
+                })
+
         </script>
 
     </body>

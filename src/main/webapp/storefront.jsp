@@ -25,8 +25,11 @@
             <a href="LogoutServlet">Logout</a>
         </div>
         <div class="main">
+            <table id="display">
 
+            </table>
         </div>
+        
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script>
             let checklogin = () => {
@@ -36,7 +39,7 @@
                         console.log(data);
                         if (data.login === "True") {
                             $("#user").text("Profile");
-                            $("#user").attr("href", "profile.jsp")
+                            $("#user").attr("href", "profile.jsp");
                         }
                     },
                     error: (jxqhr, status, thrown) => {
@@ -45,7 +48,38 @@
                     }
                 })
             };
+
+            const buildTable = function (items) {
+                console.log(items);
+                while (items.length > 0) {
+                    let rowstr = "<tr>"
+                    for (i = 0; i < 3; i++) {
+                        if (items.length > 0) {
+                            let item = items.pop();
+                            rowstr += "<td>" +
+                                    "<div class='pw_container'>" +
+                                    "<h3>" + item.regimeName + "</h3>" +
+                                    "<h4>" + item.regimeTYPE + "</h4>" +
+                                    "<h4>$" + item.price + "</h4>" +
+                                    "<button onclick='details(" + item.regimeID + ")'>Details</button>" +
+                                    "</div></td>";
+                        }
+
+                    }
+                    rowstr += "</tr>";
+                    $('#display').append(rowstr);
+                }
+            };
+            
+            const details = function(id){
+                window.location.href = "buyPathway.jsp?id=" + id;
+            }
             checklogin();
+            $.ajax("resources/regime", {
+                method: 'GET',
+                success: buildTable
+            });
+            
         </script>
     </body>
 </html>

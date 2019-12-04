@@ -103,6 +103,7 @@ public class Profiles implements Serializable {
     }
 
     @XmlTransient
+    @JsonbTransient
     public Collection<Profilecategories> getProfilecategoriesCollection() {
         return profilecategoriesCollection;
     }

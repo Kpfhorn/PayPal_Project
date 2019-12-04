@@ -7,6 +7,7 @@ package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Roadmaps.findAll", query = "SELECT r FROM Roadmaps r"),
-    @NamedQuery(name = "Roadmaps.findByRoadMapID", query = "SELECT r FROM Roadmaps r WHERE r.roadMapID = :roadMapID")})
+    @NamedQuery(name = "Roadmaps.findByRoadMapID", query = "SELECT r FROM Roadmaps r WHERE r.roadMapID = :roadMapID"),
+    @NamedQuery(name = "Roadmaps.findByProfileCategoryGoalID", query = "SELECT r FROM Roadmaps r WHERE r.profileCategoryGoalID = :profileCategoryGoalID")})
 public class Roadmaps implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -70,6 +72,7 @@ public class Roadmaps implements Serializable {
     }
 
     @XmlTransient
+    @JsonbTransient
     public Collection<Roadmapactivities> getRoadmapactivitiesCollection() {
         return roadmapactivitiesCollection;
     }

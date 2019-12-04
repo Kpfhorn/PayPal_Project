@@ -14,30 +14,31 @@ import javax.persistence.PersistenceContext;
  *
  * @author kpfho
  */
+
 @Stateless
-public class CategoryService {
+public class PCGService {
+    
     @PersistenceContext
     private EntityManager em;
     
-    public Categories selectByID(int id){
-        return em.find(Categories.class, id);
+    public Profilecategorygoals selectByID(int id){
+        return em.find(Profilecategorygoals.class, id);
     }
     
-    public int addCategory(Categories c){
-        em.persist(c);
-        return c.getCategoryID();
+    public Profilecategorygoals addPCG(Profilecategorygoals pcg){
+        em.persist(pcg);
+        return pcg;
     }
     
-    public int removeCategory(int id){
-        Categories c = em.find(Categories.class, id);
-        em.remove(c);
-        return c.getCategoryID();
+    public Profilecategorygoals removePCG(int id){
+        Profilecategorygoals pcg = em.find(Profilecategorygoals.class, id);
+        em.remove(pcg);
+        return pcg;
     }
-    
     
     public int getNewID(){
         int id = new Random().nextInt(100000);
-        Categories exists = em.find(Categories.class, id);
+        Profilecategorygoals exists = em.find(Profilecategorygoals.class, id);
         if(exists != null){
             return getNewID();
         }else{

@@ -12,43 +12,39 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+/**
+ *
+ * @author kpfho
+ */
 @Stateless
-public class RegimeService {
+public class ActivitiesService {
+    
     @PersistenceContext
     private EntityManager em;
     
-    public Regime selectByID(int id){
-        return em.find(Regime.class, id);
+    public Activities selectByID(int id){
+        return em.find(Activities.class, id);
     }
     
-    public int addRegime(Regime r){
+    public int addActivities(Activities r){
         em.persist(r);
-        return r.getRegimeID();
+        return r.getActivityID();
     }
     
-    public int removeRegime(int id){
-        Regime r = em.find(Regime.class, id);
+    public int removeActivities(int id){
+        Activities r = em.find(Activities.class, id);
         em.remove(r);
-        return r.getRegimeID();
+        return r.getActivityID();
     }
-    
-    public Collection<Regime> getPublished(){
-        TypedQuery<Regime> q = em.createNamedQuery("Regime.findByPublishStatus", Regime.class);
-        q.setParameter("publishStatus", true);
-        return q.getResultList();
-    }
-    
 
     public int getNewID(){
         int id = new Random().nextInt(100000);
-        Regime exists = em.find(Regime.class, id);
+        Activities exists = em.find(Activities.class, id);
         if(exists != null){
             return getNewID();
         }else{
             return id;
         }
     }
-    
-    
     
 }

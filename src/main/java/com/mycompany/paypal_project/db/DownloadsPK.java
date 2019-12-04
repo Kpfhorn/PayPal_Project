@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
  * @author kpfho
  */
 @Embeddable
-public class DownloadsPK implements Serializable {
+public class DownloadsPK implements Serializable{
 
     @Basic(optional = false)
     @NotNull
@@ -81,5 +81,5 @@ public class DownloadsPK implements Serializable {
     public String toString() {
         return "com.mycompany.paypal_project.db.DownloadsPK[ regimeID=" + regimeID + ", buyerUserID=" + buyerUserID + " ]";
     }
-    
+
 }

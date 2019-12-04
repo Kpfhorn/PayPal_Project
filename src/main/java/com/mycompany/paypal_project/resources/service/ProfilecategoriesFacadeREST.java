@@ -6,10 +6,12 @@
 package com.mycompany.paypal_project.resources.service;
 
 import com.mycompany.paypal_project.db.Profilecategories;
+import com.mycompany.paypal_project.db.Profilecategorygoals;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -74,6 +76,15 @@ public class ProfilecategoriesFacadeREST extends AbstractFacade<Profilecategorie
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Profilecategories> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
+    }
+    
+    @GET
+    @Path("{id}/goals")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Profilecategorygoals> findGoals(@PathParam("id") Integer id){
+        TypedQuery<Profilecategorygoals> q = em.createNamedQuery("Profilecategorygoals.findByProfileCategoryID", Profilecategorygoals.class);
+        q.setParameter("profileCategoryID", em.find(Profilecategories.class, id));
+        return q.getResultList();
     }
 
     @GET

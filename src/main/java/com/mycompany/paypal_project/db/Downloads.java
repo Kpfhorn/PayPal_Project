@@ -7,6 +7,7 @@ package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -36,11 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Downloads.findByUserRating", query = "SELECT d FROM Downloads d WHERE d.userRating = :userRating")})
 public class Downloads implements Serializable {
 
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "UserComment")
-    private String userComment;
-
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DownloadsPK downloadsPK;
@@ -49,6 +46,16 @@ public class Downloads implements Serializable {
     private Date boughtOnDate;
     @Column(name = "UserRating")
     private Integer userRating;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "UserComment")
+    private String userComment;
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Size(min = 1, max = 65535)
+    @Column(name = "Order_ID")
+    private String orderID;
     @JoinColumn(name = "Regime_ID", referencedColumnName = "Regime_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Regime regime;
@@ -61,6 +68,11 @@ public class Downloads implements Serializable {
 
     public Downloads(DownloadsPK downloadsPK) {
         this.downloadsPK = downloadsPK;
+    }
+
+    public Downloads(DownloadsPK downloadsPK, String orderID) {
+        this.downloadsPK = downloadsPK;
+        this.orderID = orderID;
     }
 
     public Downloads(int regimeID, String buyerUserID) {
@@ -91,6 +103,21 @@ public class Downloads implements Serializable {
         this.userRating = userRating;
     }
 
+    public String getUserComment() {
+        return userComment;
+    }
+
+    public void setUserComment(String userComment) {
+        this.userComment = userComment;
+    }
+
+    public String getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(String orderID) {
+        this.orderID = orderID;
+    }
 
     public Regime getRegime() {
         return regime;
@@ -131,14 +158,6 @@ public class Downloads implements Serializable {
     @Override
     public String toString() {
         return "com.mycompany.paypal_project.db.Downloads[ downloadsPK=" + downloadsPK + " ]";
-    }
-
-    public String getUserComment() {
-        return userComment;
-    }
-
-    public void setUserComment(String userComment) {
-        this.userComment = userComment;
     }
     
 }

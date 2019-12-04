@@ -6,6 +6,7 @@
 package com.mycompany.paypal_project.db;
 
 import java.util.Collection;
+import java.util.Random;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,6 +41,16 @@ public class ProfileCategoriesService {
         TypedQuery<Profilecategories> q = em.createNamedQuery("Profilecategories.findByProfileID", Profilecategories.class);
         q.setParameter("profileID", pid);
         return q.getResultList();
+    }
+    
+    public int getNewID(){
+        int id = new Random().nextInt(100000);
+        Profilecategories exists = em.find(Profilecategories.class, id);
+        if(exists != null){
+            return getNewID();
+        }else{
+            return id;
+        }
     }
     
 }

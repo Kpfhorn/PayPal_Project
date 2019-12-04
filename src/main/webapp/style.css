@@ -2,6 +2,16 @@
     margin-left: 10px;
 }
 
+.pw_container{
+    border: #AAAAAA 1px solid;
+    padding: 10px;
+}
+
+.profile{
+    border: #AAAAAA 1px solid;
+    padding: 10px;
+    margin: 5px;
+}
 .sidenav {
   height: 100%;
   width: 160px;

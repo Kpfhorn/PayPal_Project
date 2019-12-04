@@ -6,6 +6,7 @@
 package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,10 +17,12 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,12 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Categories.findByCategoryID", query = "SELECT c FROM Categories c WHERE c.categoryID = :categoryID")})
 public class Categories implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Category_ID")
-    private Integer categoryID;
     @Lob
     @Size(max = 65535)
     @Column(name = "Category_Name")
@@ -51,6 +48,15 @@ public class Categories implements Serializable {
     @Size(max = 65535)
     @Column(name = "Description")
     private String description;
+    @OneToMany(mappedBy = "categoryID")
+    private Collection<Profilecategories> profilecategoriesCollection;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "Category_ID")
+    private Integer categoryID;
     @JoinColumn(name = "CreatedBy_ID", referencedColumnName = "User_ID")
     @ManyToOne
     private User createdByID;
@@ -86,13 +92,6 @@ public class Categories implements Serializable {
         this.categoryPhoto = categoryPhoto;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
     
     @JsonbTransient
     public User getCreatedByID() {
@@ -126,6 +125,24 @@ public class Categories implements Serializable {
     @Override
     public String toString() {
         return "com.mycompany.paypal_project.db.Categories[ categoryID=" + categoryID + " ]";
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @XmlTransient
+    @JsonbTransient
+    public Collection<Profilecategories> getProfilecategoriesCollection() {
+        return profilecategoriesCollection;
+    }
+
+    public void setProfilecategoriesCollection(Collection<Profilecategories> profilecategoriesCollection) {
+        this.profilecategoriesCollection = profilecategoriesCollection;
     }
     
 }

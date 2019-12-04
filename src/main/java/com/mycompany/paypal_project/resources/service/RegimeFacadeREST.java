@@ -56,6 +56,13 @@ public class RegimeFacadeREST extends AbstractFacade<Regime> {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
+        TypedQuery<Profiles> q = em.createNamedQuery("Profiles.findByRegimeID", Profiles.class);
+        q.setParameter("regimeID", em.find(Regime.class, id));
+        List<Profiles> list = q.getResultList();
+        for(int i = 0; i < list.size(); i++){
+            Profiles p = list.get(i);
+            p.setRegimeID(null);
+        }
         super.remove(super.find(id));
     }
 
@@ -68,10 +75,11 @@ public class RegimeFacadeREST extends AbstractFacade<Regime> {
     }
 
     @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Regime> findAll() {
-        return super.findAll();
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Regime> findPublished() {
+        TypedQuery<Regime> q = em.createNamedQuery("Regime.findByPublishStatus", Regime.class);
+        q.setParameter("publishStatus", true);
+        return q.getResultList();
     }
 
     @GET
@@ -89,6 +97,20 @@ public class RegimeFacadeREST extends AbstractFacade<Regime> {
         
         q.setParameter("regimeID", em.find(Regime.class, id));
         return q.getResultList();
+    }
+    
+    @GET
+    @Path("{id}/publish")
+    public void publish(@PathParam("id") Integer id){
+        Regime r = em.find(Regime.class, id);
+        r.setPublishStatus(true);
+    }
+    
+    @GET
+    @Path("{id}/unpublish")
+    public void unpublish(@PathParam("id") Integer id){
+        Regime r = em.find(Regime.class, id);
+        r.setPublishStatus(false);
     }
 
     @GET

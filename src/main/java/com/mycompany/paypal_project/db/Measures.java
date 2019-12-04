@@ -7,6 +7,7 @@ package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -72,6 +73,7 @@ public class Measures implements Serializable {
     }
 
     @XmlTransient
+    @JsonbTransient
     public Collection<Profilecategorygoaloutcomes> getProfilecategorygoaloutcomesCollection() {
         return profilecategorygoaloutcomesCollection;
     }

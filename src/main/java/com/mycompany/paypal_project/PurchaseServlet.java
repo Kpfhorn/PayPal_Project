@@ -5,12 +5,16 @@
  */
 package com.mycompany.paypal_project;
 
-import com.mycompany.paypal_project.db.Regime;
+import com.mycompany.paypal_project.db.Downloads;
+import com.mycompany.paypal_project.db.DownloadsService;
 import com.mycompany.paypal_project.db.RegimeService;
 import com.mycompany.paypal_project.db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,11 +27,13 @@ import javax.servlet.http.HttpSession;
  *
  * @author kpfho
  */
-@WebServlet(name = "PathwayServlet", urlPatterns = {"/PathwayServlet"})
-public class PathwayServlet extends HttpServlet {
+@WebServlet(name = "PurchaseServlet", urlPatterns = {"/PurchaseServlet"})
+public class PurchaseServlet extends HttpServlet {
 
     @EJB
     private RegimeService regimeService;
+    @EJB
+    private DownloadsService dlService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,24 +46,19 @@ public class PathwayServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        
         try (PrintWriter out = response.getWriter()) {
-            String name = request.getParameter("name");
-            String type = request.getParameter("type");
-            BigDecimal price = new BigDecimal(request.getParameter("price"));
+            /* TODO output your page here. You may use following sample code. */
+            String orderID = request.getParameter("orderID");
+            int regimeID = Integer.decode(request.getParameter("regimeID"));
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
-            Regime r = new Regime();
-            r.setPrice(price);
-            r.setCreatedByID(user);
-            r.setDownloadCount(0);
-            r.setRegimeTYPE(type);
-            r.setPublishStatus(Boolean.FALSE);
-            r.setRegimeName(name);
-            r.setRegimeID(regimeService.getNewID());
-            regimeService.addRegime(r);
-            System.out.println(r);
-            out.print(r.getRegimeID());
+            Downloads dl = new Downloads(regimeID, user.getUserID());
+            dl.setBoughtOnDate(Calendar.getInstance().getTime());
+            dl.setOrderID(orderID);
+            dlService.addDownload(dl);
+            response.sendRedirect("storefront.jsp");
         }
     }
 

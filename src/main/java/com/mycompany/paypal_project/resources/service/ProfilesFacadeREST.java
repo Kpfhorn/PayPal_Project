@@ -73,6 +73,13 @@ public class ProfilesFacadeREST extends AbstractFacade<Profiles> {
     }
     
     @GET
+    @Path("/dump")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List dump(){
+        return em.createNativeQuery("SCRIPT TO './test/test.sql'").getResultList();
+    }
+    
+    @GET
     @Path("{id}/profilecategories")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<Profilecategories> findProfileCategories(@PathParam("id") Integer id){

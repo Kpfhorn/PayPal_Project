@@ -5,30 +5,30 @@
  */
 package com.mycompany.paypal_project;
 
-import com.mycompany.paypal_project.db.Regime;
-import com.mycompany.paypal_project.db.RegimeService;
-import com.mycompany.paypal_project.db.User;
+import com.mycompany.paypal_project.db.Measures;
+import com.mycompany.paypal_project.db.MeasuresService;
+import com.mycompany.paypal_project.db.PCGOService;
+import com.mycompany.paypal_project.db.Profilecategorygoaloutcomes;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author kpfho
  */
-@WebServlet(name = "PathwayServlet", urlPatterns = {"/PathwayServlet"})
-public class PathwayServlet extends HttpServlet {
+@WebServlet(name = "OutcomeServlet", urlPatterns = {"/OutcomeServlet"})
+public class OutcomeServlet extends HttpServlet {
 
     @EJB
-    private RegimeService regimeService;
-
+    private PCGOService pcgoService;
+    @EJB
+    private MeasuresService measureService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,24 +40,17 @@ public class PathwayServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String name = request.getParameter("name");
-            String type = request.getParameter("type");
-            BigDecimal price = new BigDecimal(request.getParameter("price"));
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
-            Regime r = new Regime();
-            r.setPrice(price);
-            r.setCreatedByID(user);
-            r.setDownloadCount(0);
-            r.setRegimeTYPE(type);
-            r.setPublishStatus(Boolean.FALSE);
-            r.setRegimeName(name);
-            r.setRegimeID(regimeService.getNewID());
-            regimeService.addRegime(r);
-            System.out.println(r);
-            out.print(r.getRegimeID());
+            int pcgid = Integer.decode(request.getParameter("pcgid").trim());
+            Measures ms = new Measures();
+            ms.setMeasureID(measureService.getNewID());
+            ms.setMeasureName(name);
+            measureService.addMeasure(ms);
+            Profilecategorygoaloutcomes pcgo = new Profilecategorygoaloutcomes(pcgid, ms.getMeasureID());
+            pcgoService.addPCGO(pcgo);
+            out.println("OK");
         }
     }
 

@@ -6,6 +6,7 @@
 package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
@@ -37,10 +38,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Regime.findAll", query = "SELECT r FROM Regime r"),
     @NamedQuery(name = "Regime.findByRegimeID", query = "SELECT r FROM Regime r WHERE r.regimeID = :regimeID"),
     @NamedQuery(name = "Regime.findByRegimeName", query = "SELECT r FROM Regime r WHERE r.regimeName = :regimeName"),
+    @NamedQuery(name = "Regime.findByCreatedByID", query = "SELECT r FROM Regime r WHERE r.createdByID = :createdByID"),
     @NamedQuery(name = "Regime.findByRegimeTYPE", query = "SELECT r FROM Regime r WHERE r.regimeTYPE = :regimeTYPE"),
     @NamedQuery(name = "Regime.findByPublishStatus", query = "SELECT r FROM Regime r WHERE r.publishStatus = :publishStatus"),
-    @NamedQuery(name = "Regime.findByCreatedByID", query = "SELECT r FROM Regime r WHERE r.createdByID = :createdByID"),
-    @NamedQuery(name = "Regime.findByDownloadCount", query = "SELECT r FROM Regime r WHERE r.downloadCount = :downloadCount")})
+    @NamedQuery(name = "Regime.findByDownloadCount", query = "SELECT r FROM Regime r WHERE r.downloadCount = :downloadCount"),
+    @NamedQuery(name = "Regime.findByPrice", query = "SELECT r FROM Regime r WHERE r.price = :price")})
 public class Regime implements Serializable {
 
     @Size(max = 100)
@@ -49,6 +51,12 @@ public class Regime implements Serializable {
     @Size(max = 30)
     @Column(name = "Regime_TYPE")
     private String regimeTYPE;
+    @OneToMany(mappedBy = "regimeID")
+    private Collection<Profiles> profilesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "regime")
+    private Collection<Regimedetails> regimedetailsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "regime")
+    private Collection<Downloads> downloadsCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,10 +68,11 @@ public class Regime implements Serializable {
     private Boolean publishStatus;
     @Column(name = "DownloadCount")
     private Integer downloadCount;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "regime")
-    private Collection<Downloads> downloadsCollection;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "Price")
+    private BigDecimal price;
     @JoinColumn(name = "CreatedBy_ID", referencedColumnName = "User_ID")
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User createdByID;
 
     public Regime() {
@@ -113,13 +122,12 @@ public class Regime implements Serializable {
         this.downloadCount = downloadCount;
     }
 
-    @XmlTransient
-    public Collection<Downloads> getDownloadsCollection() {
-        return downloadsCollection;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setDownloadsCollection(Collection<Downloads> downloadsCollection) {
-        this.downloadsCollection = downloadsCollection;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
     
     @JsonbTransient
@@ -155,5 +163,35 @@ public class Regime implements Serializable {
     public String toString() {
         return "com.mycompany.paypal_project.db.Regime[ regimeID=" + regimeID + " ]";
     }
-    
+
+    @XmlTransient
+    @JsonbTransient
+    public Collection<Profiles> getProfilesCollection() {
+        return profilesCollection;
+    }
+
+    public void setProfilesCollection(Collection<Profiles> profilesCollection) {
+        this.profilesCollection = profilesCollection;
+    }
+
+    @XmlTransient
+    @JsonbTransient
+    public Collection<Regimedetails> getRegimedetailsCollection() {
+        return regimedetailsCollection;
+    }
+
+    public void setRegimedetailsCollection(Collection<Regimedetails> regimedetailsCollection) {
+        this.regimedetailsCollection = regimedetailsCollection;
+    }
+
+    @XmlTransient
+    @JsonbTransient
+    public Collection<Downloads> getDownloadsCollection() {
+        return downloadsCollection;
+    }
+
+    public void setDownloadsCollection(Collection<Downloads> downloadsCollection) {
+        this.downloadsCollection = downloadsCollection;
+    }
+
 }

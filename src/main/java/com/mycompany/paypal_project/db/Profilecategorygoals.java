@@ -7,6 +7,7 @@ package com.mycompany.paypal_project.db;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Profilecategorygoals.findAll", query = "SELECT p FROM Profilecategorygoals p"),
-    @NamedQuery(name = "Profilecategorygoals.findByProfileCategoryGoalID", query = "SELECT p FROM Profilecategorygoals p WHERE p.profileCategoryGoalID = :profileCategoryGoalID")})
+    @NamedQuery(name = "Profilecategorygoals.findByProfileCategoryGoalID", query = "SELECT p FROM Profilecategorygoals p WHERE p.profileCategoryGoalID = :profileCategoryGoalID"),
+    @NamedQuery(name = "Profilecategorygoals.findByProfileCategoryID", query = "SELECT p FROM Profilecategorygoals p WHERE p.profileCategoryID = :profileCategoryID")})
 public class Profilecategorygoals implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -67,6 +69,7 @@ public class Profilecategorygoals implements Serializable {
     }
 
     @XmlTransient
+    @JsonbTransient
     public Collection<Roadmaps> getRoadmapsCollection() {
         return roadmapsCollection;
     }
@@ -76,6 +79,7 @@ public class Profilecategorygoals implements Serializable {
     }
 
     @XmlTransient
+    @JsonbTransient
     public Collection<Profilecategorygoaloutcomes> getProfilecategorygoaloutcomesCollection() {
         return profilecategorygoaloutcomesCollection;
     }

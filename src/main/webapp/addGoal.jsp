@@ -25,44 +25,65 @@
         </div>
         <div class="main">
             <h1>Add Goal</h1>
-            Name: <input type="text" id="goalName"/>
+            Goal: <input type="text" id="goalName"/><br/>
+            <div id="activities">
+                Activity: <input type="text" id="activityName1"/><br/>
+            </div>
+            <button onclick="addActivity()">Add Activity</button><br/>
+            Outcome: <input type="text" id="outcomeName"/>
             <button onclick="create()">Add</button>
         </div>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script>
+                let activityCounter = 1;
+                const addActivity = function () {
+                    activityCounter += 1;
+                    $("#activities").append("Activity: <input type='text' id='activityName" + activityCounter + "'/><br/>");
+                }
                 const create = function () {
-                    let name = $('#goalName').val();
-                    let id = Math.floor(Math.random() * 100001);
-                    let tmp = {
-                                    goalName: name,
-                                    goalID: id
-                                }
-                    $.ajax("resources/goals/" + id, {
+                    let goalName = $("#goalName").val();
+                    $.ajax("GoalServlet", {
                         method: 'GET',
-                        success: () => {
-                            $.ajax("resources/goals", {
-                                method: 'POST',
-                                data: JSON.stringify(tmp),
-                                contentType: "application/json",
+                        data: {
+                            name: goalName,
+                            pcid: ${pcid}
+                        },
+                        success: (data) => {
+                            let arr = data.split("\n");
+                            let pcgID = arr[0];
+                            let rmID = arr[1];
+                            console.log(arr);
+                            let outcome = $('#outcomeName').val();
+                            $.ajax("OutcomeServlet", {
+                                method: 'GET',
+                                data: {
+                                    name: outcome,
+                                    pcgid: pcgID
+                                },
                                 success: (data) => {
-                                    let tmp2 = {
-                                            profileCategoryGoalID: id,
-                                            goalID: id,
-                                            profileCategoryID: ${pcid}
-                                        }
-                                    $.ajax("resources/profilecategorygoals", {
-                                        method: 'POST',
-                                        data: JSON.stringify(tmp2),
-                                        contentType: "application/json",
-                                        success: (data) => {
-                                            console.log('GOAL MADE');
-                                        }
-
-                                    })
+                                    console.log("outcomeData" + data);
                                 }
                             })
+                            let activities = []
+                            for (i = 1; i <= activityCounter; i++) {
+                                let dt = {
+                                    name: $("#activityName" + i).val(),
+                                    rmID: rmID
+                                }
+                                $.ajax("ActivityServlet", {
+                                    method: 'GET',
+                                    data: dt,
+                                    success: (data) => {
+                                        console.log(data);
+                                    }
+                                })
+
+
+                            }
+                            history.back();
                         }
                     })
+
                 }
         </script>
     </body>

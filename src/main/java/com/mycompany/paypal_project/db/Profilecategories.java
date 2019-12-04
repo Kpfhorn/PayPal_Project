@@ -88,6 +88,7 @@ public class Profilecategories implements Serializable {
     }
 
     @XmlTransient
+    @JsonbTransient
     public Collection<Profilecategorygoals> getProfilecategorygoalsCollection() {
         return profilecategorygoalsCollection;
     }
@@ -96,7 +97,7 @@ public class Profilecategories implements Serializable {
         this.profilecategorygoalsCollection = profilecategorygoalsCollection;
     }
     
-
+    
     public Categories getCategoryID() {
         return categoryID;
     }

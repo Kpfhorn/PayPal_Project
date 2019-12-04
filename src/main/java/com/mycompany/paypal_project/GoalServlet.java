@@ -5,7 +5,14 @@
  */
 package com.mycompany.paypal_project;
 
+import com.mycompany.paypal_project.db.Goals;
 import com.mycompany.paypal_project.db.GoalsService;
+import com.mycompany.paypal_project.db.PCGService;
+import com.mycompany.paypal_project.db.ProfileCategoriesService;
+import com.mycompany.paypal_project.db.Profilecategories;
+import com.mycompany.paypal_project.db.Profilecategorygoals;
+import com.mycompany.paypal_project.db.Roadmaps;
+import com.mycompany.paypal_project.db.RoadmapsService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -25,6 +32,12 @@ public class GoalServlet extends HttpServlet {
     
     @EJB
     private GoalsService goalService;
+    @EJB
+    private ProfileCategoriesService pcService;
+    @EJB
+    private PCGService pcgService;
+    @EJB
+    private RoadmapsService rmService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,7 +53,25 @@ public class GoalServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String name = request.getParameter("name");
-            String pcid = request.getParameter("pcid");
+            int pcid = Integer.decode(request.getParameter("pcid"));
+            Profilecategories pc = pcService.selectByID(pcid);
+            Goals g = new Goals();
+            g.setGoalID(goalService.getNewID());
+            g.setGoalName(name);
+            goalService.addGoal(g);
+            Profilecategorygoals pcg = new Profilecategorygoals();
+            pcg.setGoalID(g);
+            pcg.setProfileCategoryGoalID(pcgService.getNewID());
+            pcg.setProfileCategoryID(pc);
+            pcgService.addPCG(pcg);
+            Roadmaps rm = new Roadmaps();
+            rm.setProfileCategoryGoalID(pcg);
+            rm.setRoadMapID(rmService.getNewID());
+            rmService.addRoadmap(rm);
+            out.println(pcg.getProfileCategoryGoalID());
+            out.println(rm.getRoadMapID());
+            
+            
         }
     }
 

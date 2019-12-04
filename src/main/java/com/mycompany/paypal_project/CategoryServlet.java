@@ -53,7 +53,7 @@ public class CategoryServlet extends HttpServlet {
             User user = (User)session.getAttribute("user");
             String name = request.getParameter("name");
             String desc = request.getParameter("desc");
-            int categoryID = Integer.decode(request.getParameter("cid"));
+            int categoryID = categoryService.getNewID();
             int profileID = Integer.decode(request.getParameter("pid"));
             Categories c = new Categories();
             c.setCategoryID(categoryID);
@@ -62,7 +62,7 @@ public class CategoryServlet extends HttpServlet {
             c.setDescription(desc);
             categoryService.addCategory(c);
             Profilecategories pc = new Profilecategories();
-            pc.setProfileCategoryID(1);
+            pc.setProfileCategoryID(pcService.getNewID());
             pc.setCategoryID(c);
             pc.setProfileID(profileService.selectByID(profileID));
             pcService.addProfileCategory(pc);

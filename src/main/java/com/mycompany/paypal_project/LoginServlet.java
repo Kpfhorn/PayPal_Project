@@ -46,6 +46,8 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", u);
             System.out.println(session.getId());
             response.sendRedirect("storefront.jsp");
+        }else{
+            response.sendRedirect("storefront.jsp");
         }
         
     }
